@@ -7,20 +7,6 @@ from src.storage.db import init_db
 
 app = FastAPI(title="AI Intelligence Pipeline API")
 
-{
-  "builds": [
-    {
-      "src": "api/main.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/main.py"
-    }
-  ]
-}
 
 app.add_middleware(
     CORSMiddleware,
