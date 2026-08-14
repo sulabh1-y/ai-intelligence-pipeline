@@ -12,15 +12,16 @@ fastapi==0.141.1
 frozenlist==1.8.0
 h11==0.16.0
 idna==3.18
+lxml==6.1.1
 multidict==6.7.1
 propcache==0.5.2
 pydantic==2.13.4
 pydantic_core==2.46.4
 python-dotenv==1.2.2
 soupsieve==2.9.2
+SQLAlchemy==2.0.36
 starlette==1.6.0
 typing-inspection==0.4.4
 typing_extensions==4.16.0
 uvicorn==0.52.3
 yarl==1.24.5
-SQLAlchemy==2.0.36

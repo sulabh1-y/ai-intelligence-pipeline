@@ -5,50 +5,39 @@ from src.crawler.base import BaseCrawler
 from src.llm_engine.orchestrator import LLMOrchestrator
 from bs4 import BeautifulSoup
 
-
 class PapersScraper(BaseCrawler):
 
-    async def scrape_papers(self):
-        url = "https://arxiv.org/list/cs.AI/recent"
-        html = await self.fetch(url)
+    async def scrape_papers(self, limit=20):
+        url = f"http://export.arxiv.org/api/query?search_query=cat:cs.AI&sortBy=lastUpdatedDate&sortOrder=descending&max_results={limit}"
+        xml_data = await self.fetch(url)
 
-        if not html:
-            print("Failed to fetch")
+        if not xml_data:
+            print("Failed to fetch from arXiv API")
             return []
 
-        soup = BeautifulSoup(html, "html.parser")
+        # Use xml parser for the arXiv API response
+        soup = BeautifulSoup(xml_data, "xml")
 
         papers = []
+        entries = soup.find_all("entry")
 
-        entries = soup.find_all("dt")
-        descriptions = soup.find_all("dd")
-
-        for i in range(min(5, len(entries))):
-            entry = entries[i]
-            desc = descriptions[i]
-
-            # Extract paper link
-            link_tag = entry.find("a", title="Abstract")
-            link = "https://arxiv.org" + link_tag["href"]
+        for entry in entries:
+            # Extract paper link (id in Atom feed is the URL)
+            link_tag = entry.find("id")
+            link = link_tag.text.strip() if link_tag else ""
 
             # Extract title
-            title_tag = desc.find("div", class_="list-title mathjax")
-            title = title_tag.text.replace("Title:", "").strip()
-
-            # Fetch paper detail page
-            paper_html = await self.fetch(link)
-            if not paper_html:
-                continue
-
-            paper_soup = BeautifulSoup(paper_html, "html.parser")
+            title_tag = entry.find("title")
+            title = title_tag.text.replace("\n", " ").strip() if title_tag else "No Title"
 
             # Extract authors
-            authors_tag = paper_soup.find("div", class_="authors")
-            authors = authors_tag.text.replace("Authors:", "").strip() if authors_tag else "N/A"
+            authors_tags = entry.find_all("author")
+            authors_list = [author.find("name").text.strip() for author in authors_tags if author.find("name")]
+            authors = ", ".join(authors_list) if authors_list else "N/A"
 
-            # Extract abstract
-            abstract_tag = paper_soup.find("blockquote", class_="abstract mathjax")
-            abstract = abstract_tag.text.replace("Abstract:", "").strip() if abstract_tag else "N/A"
+            # Extract abstract/summary
+            abstract_tag = entry.find("summary")
+            abstract = abstract_tag.text.replace("\n", " ").strip() if abstract_tag else "N/A"
 
             papers.append({
                 "title": title,
@@ -59,10 +48,9 @@ class PapersScraper(BaseCrawler):
 
         return papers
 
-
 async def main():
     scraper = PapersScraper()
-    papers = await scraper.scrape_papers()
+    papers = await scraper.scrape_papers(limit=5)
 
     llm = LLMOrchestrator()
 

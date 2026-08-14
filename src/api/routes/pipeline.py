@@ -23,7 +23,7 @@ async def get_papers(
         print("🐢 Fetching fresh data...")
 
         scraper = PapersScraper()
-        papers = await scraper.scrape_papers()
+        papers = await scraper.scrape_papers(limit=limit)
 
         llm = LLMOrchestrator()
 
