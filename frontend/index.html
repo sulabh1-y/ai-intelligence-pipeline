@@ -1,17 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AI Papers Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Intelligence Pipeline — Research Papers Dashboard</title>
+    <meta name="description" content="Discover and explore the latest AI research papers, curated and categorized by an intelligent pipeline. Browse AI Agents, Computer Vision, NLP, Robotics, and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 </head>
 <body>
 
-<h1>📄 AI Research Papers</h1>
+    <!-- Animated background -->
+    <div class="bg-mesh"></div>
+    <div class="particles" id="particles"></div>
 
-<button onclick="getPapers()">Load Papers</button>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-brand">
+            <div class="navbar-logo">AI</div>
+            <div class="navbar-title"><span>Intelligence</span> Pipeline</div>
+        </a>
+        <div class="navbar-actions">
+            <div class="navbar-status" id="api-status">
+                <div class="status-dot"></div>
+                <span>API Connected</span>
+            </div>
+            <button class="btn-refresh" id="btn-refresh" onclick="fetchPapers()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                Refresh
+            </button>
+        </div>
+    </nav>
 
-<div id="output"></div>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>Powered by AI</span>
+        </div>
+        <h1>
+            <span class="gradient-text">AI Research</span><br>
+            Intelligence Pipeline
+        </h1>
+        <p class="hero-subtitle">
+            Automatically curated and categorized research papers from the frontier of artificial intelligence. Stay ahead of the curve.
+        </p>
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-papers">—</div>
+                <div class="stat-label">Papers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-categories">—</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-authors">—</div>
+                <div class="stat-label">Authors</div>
+            </div>
+        </div>
+    </section>
 
-<script src="script.js"></script>
+    <!-- Main content -->
+    <main class="main-content">
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                    type="search"
+                    class="search-input"
+                    id="search-input"
+                    placeholder="Search papers, authors, topics..."
+                    autocomplete="off"
+                >
+            </div>
+            <div class="category-chips" id="category-chips">
+                <button class="chip active" data-category="all" onclick="filterByCategory('all', this)">All Papers</button>
+            </div>
+        </div>
 
+        <!-- Results info -->
+        <div class="results-info" id="results-info" style="display:none;">
+            <span class="results-count" id="results-count"></span>
+        </div>
+
+        <!-- Papers container -->
+        <div id="papers-container">
+            <!-- Loading skeleton shown by default -->
+            <div class="papers-grid" id="skeleton-loader">
+                <div class="skeleton-card">
+                    <div class="skeleton-line w-40"></div>
+                    <div class="skeleton-line h-20 w-80"></div>
+                    <div class="skeleton-line w-60"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line w-80"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line w-40"></div>
+                    <div class="skeleton-line h-20 w-80"></div>
+                    <div class="skeleton-line w-60"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line w-80"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line w-40"></div>
+                    <div class="skeleton-line h-20 w-80"></div>
+                    <div class="skeleton-line w-60"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line w-80"></div>
+                </div>
+            </div>
+
+            <!-- Actual papers grid (hidden until loaded) -->
+            <div class="papers-grid" id="papers-grid" style="display:none;"></div>
+
+            <!-- Error state -->
+            <div class="error-container" id="error-container" style="display:none;">
+                <div class="error-icon">⚠️</div>
+                <div class="error-title">Failed to fetch papers</div>
+                <div class="error-message" id="error-message">Could not connect to the API. Please try again.</div>
+                <button class="btn-retry" onclick="fetchPapers()">Try Again</button>
+            </div>
+
+            <!-- Empty state -->
+            <div class="empty-state" id="empty-state" style="display:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <p>No papers match your search. Try a different query or category.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Built with 🧠 by <a href="#">AI Intelligence Pipeline</a> · Powered by FastAPI & arXiv</p>
+    </footer>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
