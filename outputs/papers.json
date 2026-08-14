@@ -1,0 +1,89 @@
+[
+    {
+        "recordType": "RESEARCH_PAPER",
+        "content": {
+            "title": "OmniScientist: An Omni-Modal Omni-Discipline AI Scientist",
+            "authors": [
+                "Bobo Li",
+                "Hao Fei",
+                "Tianjie Ju",
+                "Mong-Li Lee",
+                "Wynne Hsu"
+            ],
+            "category": "AI Agents",
+            "summary": "Recent advances in foundation models have enabled AI scientists to automate increasingly complete research workflows, from hypothesis generation and code execution to manuscript preparation. Yet workflow coverage alone does not provide access to the full evidence on which scientific discovery depends. Existing systems typically reason over text, code, labels, or precomputed summaries, leaving scientifically decisive spatial, temporal, cross-channel, and procedural relations unavailable to the agent. We introduce OmniScientist, an end-to-end, omni-modal AI scientist that conducts multidisciplinary research directly from heterogeneous raw evidence. A perception layer and 3 autonomous agents for ideation, experiment, and writeup operate within a deterministic pipeline, allowing observations to shape research questions, experimental decisions, and final claims throughout the research lifecycle. By running idea, rigour, and claim checks in code, the system enforces novelty screening, statistical validity, execution provenance, and numerical traceability. We evaluate OmniScientist on 36 real-data cases spanning 5 discipline families, 4 families of scientific evidence, and modalities including images, signals, audio, video, 3-D structures, trajectories, tables, formulae, and graphs. The system completes the full path from raw data to a compiled manuscript in all 36 cases and achieves a mean overall paper score of 6.3 with the reference reasoning backbone. In paired comparisons against a blind variant that receives only precomputed scalar features, direct perception improves all 7 evaluation dimensions and wins 85% of head-to-head judgments. These results show that lifecycle-wide perception is essential for evidence-grounded scientific discovery and provides a practical path toward broadly capable AI scientists."
+        }
+    },
+    {
+        "recordType": "RESEARCH_PAPER",
+        "content": {
+            "title": "QuoteBench: How Matched Scores Can Hide Command-Path Failures",
+            "authors": [
+                "Shangao Li",
+                "Yao Zhang",
+                "Volker Tresp",
+                "Yuanyuan Yang"
+            ],
+            "category": "AI Agents",
+            "summary": "LLM coding agents issue Bash commands through interfaces that may serialize, wrap, and reparse model output. Matched execution scores alone cannot distinguish command-generation errors from failures introduced after generation. QuoteBench measures this boundary with exact final-state validation on 56 one-shot tasks from 14 incident-derived families, crossing the generation contract with the execution transport around one deliberately unescaped added parser. Escaping at the interpolation point reproduces each replayed reply's raw-path outcome, so any recovery under a disclosed boundary must come from the model changing its generation. Across eight same-window configurations, replaying the same reply through the added parser lowers success by 55.4 to 73.2 percentage points; disclosure recovers 30.4 to 60.7 points for six configurations, and zero or slightly negative for the other two. Raw generation is nearly saturated at the frontier; boundary adaptation is what still separates models. GPT-5.6-sol's matched gap of -3.6 points hides -64.3 points of damage and +60.7 points of compensation. The deployment configuration reorders models: one reversal among 26 comparable pairs is unambiguous and four more sit on single-task margins. Evaluations of command-issuing agents should report the model configuration, generation contract, execution path, operating point, and final-state validator rather than treat a matched score as an intrinsic model property."
+        }
+    },
+    {
+        "recordType": "RESEARCH_PAPER",
+        "content": {
+            "title": "AlayaWorld: Interactive Long-Horizon World Modeling - Full Technical Report (v1.1)",
+            "authors": [
+                "AlayaWorld Team: Kaipeng Zhang",
+                "Chuanhao Li",
+                "Yifan Zhan",
+                "Yongtao Ge",
+                "Yuanyang Yin",
+                "Jiaming Tan",
+                "Kang He",
+                "Liaoyuan Fan",
+                "Mingliang Zhai",
+                "Ruicong Liu",
+                "Xiaojie Xu",
+                "Xuangeng Chu",
+                "Zhen Li",
+                "Zhengyuan Lin",
+                "Zhixiang Wang",
+                "Zian Meng",
+                "Zihui Gao"
+            ],
+            "category": "Computer Vision",
+            "summary": "This report presents an improved version of AlayaWorld. While the backbone architecture, chunk-wise autoregressive generation scheme, and training data remain unchanged from the previous release, we substantially revise how conditioning signals are represented and integrated into the model. The new design is guided by a simple principle: conditioning signals should match the generated content as closely as possible in both latent representation and temporal structure. To this end, we make two major changes. First, we replace the previous depth-warping-based spatial memory with a streaming 3D point-cache renderer. Second, we redesign the conditioning pipeline so that visual conditions are encoded in the same causal-VAE latent space, with temporal statistics consistent with those of the generated video. Concretely, the new version introduces six modifications: (1) replacing static-frame image conditioning with motion-aware latent conditioning; (2) causally encoding re-rendered spatial memory as a continuous sequence; (3) aligning the temporal-memory window in pixel space; (4) adopting hard memory dropout that removes memory tokens rather than zeroing them; (5) unifying the VAE encoding and decoding protocol across training and inference; and (6) removing the camera AdaLN branch, such that viewpoint control is provided entirely through the re-rendered spatial condition."
+        }
+    },
+    {
+        "recordType": "RESEARCH_PAPER",
+        "content": {
+            "title": "MARC v1: An Open-Source Multi-Agent Framework for Clinical AI Reasoning and Coordination",
+            "authors": [
+                "Saisha Shetty",
+                "Satvik Tripathi",
+                "Austin Lin",
+                "Colin Zhao",
+                "Theodore Kim",
+                "Don Enwerem",
+                "Jacinta Arnold",
+                "Shahriar Faghani",
+                "Tessa S Cook"
+            ],
+            "category": "AI Agents",
+            "summary": "We present Multi-Agent Reasoning and Coordination (MARC), an open-source framework that replaces monolithic LLM prompting with deterministic multi-agent orchestration for clinical reasoning. MARC coordinates role-specialized agents for extraction, reasoning, answer generation, and evaluation, with explicit context passing and traceable intermediate outputs, enabling stage-wise failure attribution. We additionally introduce a Decomposer module that generates task-specific agent prompts from a plain-language description, eliminating manual prompt engineering. The framework supports both API-based and local CPU-compatible deployments and is entirely configurable via YAML, without code modifications. MARC is designed to be model-agnostic, interpretable, and accessible to clinical domain experts without programming expertise. The full framework is available at this https URL."
+        }
+    },
+    {
+        "recordType": "RESEARCH_PAPER",
+        "content": {
+            "title": "A Unifying Perspective on Causal World Models: From Observations to Representations to Structure",
+            "authors": [
+                "Avinash Kori",
+                "Fabrizio Russo"
+            ],
+            "category": "AI Agents",
+            "summary": "World Models (WM) are increasingly seen as a foundation for intelligent agents that can predict, plan, and act beyond their training distribution. In this paper, we study WMs from a causal perspective across multiple levels of abstraction, ranging from perceptual observations to building a conceptual representation of the structure governing the environment dynamics. We argue that useful WMs must go beyond generative capabilities alone: they should also capture entity properties, entity-to-entity interactions, and entity-to-environment interactions that determine and explain the dynamics of a system. We provide a formal definition of Causal WMs (CWMs) grounded in the tasks they are intended to support, connecting world modelling with existing work in causal representation learning, object-centric learning, causal discovery, structural causal models, and model-based decision-making. Finally, we relate CWMs to the literature on identifiability, clarifying when the components of a WM can be recovered from data and up to which equivalence. With this, we ground WMs in representations and structures that support causal reasoning and informed decision-making."
+        }
+    }
+]
