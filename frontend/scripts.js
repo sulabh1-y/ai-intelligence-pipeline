@@ -1,4 +1,5 @@
 // ===== CONFIG =====
+// Use same-origin — frontend is served by the FastAPI backend
 const API_URL = "https://ai-intelligence-pipeline.onrender.com";
 const MAX_PAPERS = 20;
 
