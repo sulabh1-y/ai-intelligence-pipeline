@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from src.api.routes import pipeline, health
+from src.storage.db import init_db
 
 app = FastAPI(title="AI Intelligence Pipeline API")
 
@@ -14,10 +15,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes (these are matched BEFORE the static mount)
+
+@app.on_event("startup")
+def on_startup():
+    init_db()
+
+
 app.include_router(health.router)
 app.include_router(pipeline.router)
 
-# Serve frontend static files at root — must be LAST
-# html=True makes "/" serve index.html automatically
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
